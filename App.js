@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
-// TODO (Ejercicio 05, paso 1): importa SafeAreaProvider y useSafeAreaInsets de react-native-safe-area-context
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import ExerciseMenu from "./src/components/ExerciseMenu";
 import DimensionsScreen from "./src/screens/DimensionsScreen";
 import UseWindowDimensionsScreen from "./src/screens/UseWindowDimensionsScreen";
@@ -28,9 +28,7 @@ export const EXERCISES = [
  */
 function Root() {
   const [current, setCurrent] = useState(null);
-  // TODO (Ejercicio 05, paso 1): esto es el anti-patrón de la slide 17: padding fijo "para el notch".
-  // Reemplázalo por los insets reales de useSafeAreaInsets().
-  const insets = { top: 40, bottom: 0, left: 0, right: 0 };
+  const insets = useSafeAreaInsets();
   const exercise = EXERCISES.find((e) => e.key === current);
   const fullBleed = exercise?.key === "safearea" || exercise?.key === "gallery";
 
@@ -53,8 +51,11 @@ function Root() {
 }
 
 export default function App() {
-  // TODO (Ejercicio 05, paso 1): envuelve <Root /> con <SafeAreaProvider>, una sola vez, aquí en la raíz.
-  return <Root />;
+  return (
+    <SafeAreaProvider>
+      <Root />
+    </SafeAreaProvider>
+  );
 }
 
 const styles = StyleSheet.create({
